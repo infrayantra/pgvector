@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: pgvector-demo
+    environment:
+      POSTGRES_USER: pgvector
+      POSTGRES_PASSWORD: pgvector
+      POSTGRES_DB: pgvector_demo
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgvector_demo_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pgvector -d pgvector_demo"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+    shm_size: 256mb
+
+volumes:
+  pgvector_demo_data:
